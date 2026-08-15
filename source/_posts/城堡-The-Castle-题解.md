@@ -4,13 +4,14 @@ date: 2026-08-15 09:02:39
 tags:
 ---
 题目地址: https://www.luogu.com.cn/problem/P1457#ide
-
-{% raw %}
+```cpp
 #include<iostream>
 #include<vector>
 using namespace std;
 vector<int>pre(3010);//并查集
-int h[4][2]={{0,-1},{-1,0},{0,1},{1,0}};
+int h[4][2]={
+{0,-1},{-1,0},{0,1},{1,0}
+};
 int find(int x){
     if(x==pre[x])return x;
     return pre[x]=find(pre[x]);
@@ -70,5 +71,5 @@ int main(){
     cout<<x<<" "<<y<<" "<<c;
     return 0;
 }
-{% endraw %}
+```
 ---
