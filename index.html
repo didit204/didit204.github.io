@@ -71,6 +71,198 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-Lynyrd-Skynyrd题解" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2026/08/21/Lynyrd-Skynyrd%E9%A2%98%E8%A7%A3/" class="article-date">
+  <time class="dt-published" datetime="2026-08-21T01:40:50.000Z" itemprop="datePublished">2026-08-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2026/08/21/Lynyrd-Skynyrd%E9%A2%98%E8%A7%A3/">Lynyrd Skynyrd题解</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>题目地址: <a target="_blank" rel="noopener" href="https://codeforces.com/contest/1143/E">https://codeforces.com/contest/1143/E</a></p>
+<p>题解用的是倍增<br>写了一个转换成图的写法<br>时间复杂度比题解快</p>
+<pre><code class="cpp">#include &lt;bits/stdc++.h&gt;
+#define all(x) x.begin(), x.end()
+#define int long long
+using namespace std;
+
+const int mod = 998244353;
+#define double long double
+using i128 = __int128_t;
+typedef pair&lt;int, int&gt; pii;
+
+// reverseGraph[x]：所有满足 next[i] = x 的位置 i
+vector&lt;vector&lt;int&gt;&gt; reverseGraph(200010);
+
+// earliestEnd[i]：从位置 i 开始，形成长度 n 的合法子序列时的结束位置
+vector&lt;int&gt; earliestEnd(200010);
+
+// path[pos]：DFS 当前路径上第 pos 个位置
+vector&lt;int&gt; path(200010);
+
+// visited[i]：位置 i 是否已经被 DFS 处理
+vector&lt;int&gt; visited(200010);
+
+// pos[x]：数字 x 在排列 p 中的下标（0-based）
+vector&lt;int&gt; pos(200010);
+int n;
+/*
+    x:当前点的位置
+    left, right：当前路径中有效滑动窗口的左右端点
+    如果当前路径长度 &gt;= n，
+    那么就找到了一个长度为 n 的循环移位子序列。
+*/
+void dfs(int x, int left, int right) &#123;
+    //只保留长度为 n 的滑动窗口
+    //path[left ... right]
+    if (right - left + 1 &gt;= n) &#123;
+        left++;
+    &#125;
+    right++;
+    for (auto nextNode : reverseGraph[x]) &#123;
+
+        if (visited[nextNode])
+            continue;
+        visited[nextNode] = 1;
+
+        // 当前路径已经有至少 n 个节点
+        if (right - left + 1 &gt;= n) &#123;
+            earliestEnd[nextNode] = path[left];
+        &#125;
+        path[right] = nextNode;
+        dfs(nextNode, left, right);
+    &#125;
+&#125;
+void solve() &#123;
+    int m, q;
+    cin &gt;&gt; n &gt;&gt; m &gt;&gt; q;
+    if (n &gt; m) &#123;
+        while (q--)
+        cout &lt;&lt; 0;
+        return;
+    &#125;
+
+    // p：长度为 n 的排列
+    // a：长度为 m 的数组
+    vector&lt;int&gt; p(n + 1);
+    vector&lt;int&gt; a(m + 1);
+
+    // nextPosition[i]：
+    // 从 a[i] 出发，按照 p 的循环顺序，
+    // 下一个可以接上的位置
+    vector&lt;int&gt; nextPosition(m + 1);
+
+    // lastPosition[rank]：
+    // 当前从右往左扫描 a 时，
+    // p 中第 rank 个位置对应的数字最近出现在哪里
+    vector&lt;int&gt; lastPosition(n + 1);
+
+    for (int i = 1; i &lt;= n; i++) &#123;
+        cin &gt;&gt; p[i];
+        //p中数字p[i]的0-based位置
+        pos[p[i]] = i - 1;
+    &#125;
+    for (int i = 1; i &lt;= m; i++)cin &gt;&gt; a[i];
+    lastPosition[pos[a[m]]] = m;
+
+    for (int i = m - 1; i &gt;= 1; i--) &#123;
+        int rank = pos[a[i]];
+        int nextRank = (rank + 1) % n;
+        if (lastPosition[nextRank]) &#123;
+            nextPosition[i] = lastPosition[nextRank];
+            //从右往左建立 nextPosition。
+            //即寻找这个元素在 a[i] 后面最近出现的位置。
+        &#125;
+        lastPosition[rank] = i;
+    &#125;
+    for (int i = 1; i &lt;= m; i++) &#123;
+        reverseGraph[nextPosition[i]].push_back(i);
+        //从后往前 DFS，建立反向图
+    &#125;
+
+    //对每一条链进行 DFS。
+    for (int i = m; i &gt;= 1; i--) &#123;
+        if (visited[i])continue;
+        visited[i] = 1;
+        path[0] = i;
+        dfs(i, 0, 0);
+        //DFS 可以一次处理整条链，不需要像题解那样对每个节点单独 binary lifting。
+    &#125;
+    int minEnd = 0;
+    //earliestEnd[i] 原本表示：从 i 开始的合法子序列最早在哪里结束。
+    //所以需要做后缀最小值
+    for (int i = m; i &gt;= 1; i--) &#123;
+        if (minEnd == 0) &#123;
+            minEnd = earliestEnd[i];
+            continue;
+        &#125;
+        if (earliestEnd[i])
+            minEnd = min(minEnd, earliestEnd[i]);
+        earliestEnd[i] = minEnd;
+    &#125;
+    if (n == 1) &#123;
+        for (int i = 1; i &lt;= m; i++)
+            earliestEnd[i] = i;
+    &#125;
+    while (q--) &#123;
+        int left, right;
+        cin &gt;&gt; left &gt;&gt; right;
+        if (earliestEnd[left] == 0) &#123;
+            cout &lt;&lt; 0;
+            continue;
+        &#125;
+        if (right &gt;= earliestEnd[left])
+            cout &lt;&lt; 1;
+        else
+            cout &lt;&lt; 0;
+    &#125;
+&#125;
+signed main() &#123;
+    ios::sync_with_stdio(false);
+    cin.tie(0);
+    cout.tie(0);
+    int t = 1;
+    // cin &gt;&gt; t;
+    while (t--) &#123;
+        solve();
+    &#125;
+    return 0;
+&#125;
+```cpp
+时间复杂度O(n+m+p)
+题解时间复杂度O((n+m)logn +p)
+题解:https://codeforces.com/blog/entry/66301 1142B
+</code></pre>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://didit204.github.io/2026/08/21/Lynyrd-Skynyrd%E9%A2%98%E8%A7%A3/" data-id="cmt2b0hyq0000xwvg494n6qto" data-title="Lynyrd Skynyrd题解" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-城堡-The-Castle-题解" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2026/08/15/%E5%9F%8E%E5%A0%A1-The-Castle-%E9%A2%98%E8%A7%A3/" class="article-date">
@@ -227,6 +419,10 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2026/08/21/Lynyrd-Skynyrd%E9%A2%98%E8%A7%A3/">Lynyrd Skynyrd题解</a>
+          </li>
         
           <li>
             <a href="/2026/08/15/%E5%9F%8E%E5%A0%A1-The-Castle-%E9%A2%98%E8%A7%A3/">城堡 The Castle 题解</a>

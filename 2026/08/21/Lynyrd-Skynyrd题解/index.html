@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Lynyrd Skynyrd题解 | didit204</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="题目地址: https:&#x2F;&#x2F;codeforces.com&#x2F;contest&#x2F;1143&#x2F;E 题解用的是倍增写了一个转换成图的写法时间复杂度比题解快 #include &lt;bits&#x2F;stdc++.h&gt; #define all(x) x.begin(), x.end() #define int long long using namespace std;  const int mod &#x3D; 998">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Lynyrd Skynyrd题解">
+<meta property="og:url" content="http://didit204.github.io/2026/08/21/Lynyrd-Skynyrd%E9%A2%98%E8%A7%A3/index.html">
+<meta property="og:site_name" content="didit204">
+<meta property="og:description" content="题目地址: https:&#x2F;&#x2F;codeforces.com&#x2F;contest&#x2F;1143&#x2F;E 题解用的是倍增写了一个转换成图的写法时间复杂度比题解快 #include &lt;bits&#x2F;stdc++.h&gt; #define all(x) x.begin(), x.end() #define int long long using namespace std;  const int mod &#x3D; 998">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2026-08-21T01:40:50.000Z">
+<meta property="article:modified_time" content="2026-08-21T02:01:02.222Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="didit204" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">didit204</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://didit204.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-Lynyrd-Skynyrd题解" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2026/08/21/Lynyrd-Skynyrd%E9%A2%98%E8%A7%A3/" class="article-date">
+  <time class="dt-published" datetime="2026-08-21T01:40:50.000Z" itemprop="datePublished">2026-08-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Lynyrd Skynyrd题解
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>题目地址: <a target="_blank" rel="noopener" href="https://codeforces.com/contest/1143/E">https://codeforces.com/contest/1143/E</a></p>
+<p>题解用的是倍增<br>写了一个转换成图的写法<br>时间复杂度比题解快</p>
+<pre><code class="cpp">#include &lt;bits/stdc++.h&gt;
+#define all(x) x.begin(), x.end()
+#define int long long
+using namespace std;
+
+const int mod = 998244353;
+#define double long double
+using i128 = __int128_t;
+typedef pair&lt;int, int&gt; pii;
+
+// reverseGraph[x]：所有满足 next[i] = x 的位置 i
+vector&lt;vector&lt;int&gt;&gt; reverseGraph(200010);
+
+// earliestEnd[i]：从位置 i 开始，形成长度 n 的合法子序列时的结束位置
+vector&lt;int&gt; earliestEnd(200010);
+
+// path[pos]：DFS 当前路径上第 pos 个位置
+vector&lt;int&gt; path(200010);
+
+// visited[i]：位置 i 是否已经被 DFS 处理
+vector&lt;int&gt; visited(200010);
+
+// pos[x]：数字 x 在排列 p 中的下标（0-based）
+vector&lt;int&gt; pos(200010);
+int n;
+/*
+    x:当前点的位置
+    left, right：当前路径中有效滑动窗口的左右端点
+    如果当前路径长度 &gt;= n，
+    那么就找到了一个长度为 n 的循环移位子序列。
+*/
+void dfs(int x, int left, int right) &#123;
+    //只保留长度为 n 的滑动窗口
+    //path[left ... right]
+    if (right - left + 1 &gt;= n) &#123;
+        left++;
+    &#125;
+    right++;
+    for (auto nextNode : reverseGraph[x]) &#123;
+
+        if (visited[nextNode])
+            continue;
+        visited[nextNode] = 1;
+
+        // 当前路径已经有至少 n 个节点
+        if (right - left + 1 &gt;= n) &#123;
+            earliestEnd[nextNode] = path[left];
+        &#125;
+        path[right] = nextNode;
+        dfs(nextNode, left, right);
+    &#125;
+&#125;
+void solve() &#123;
+    int m, q;
+    cin &gt;&gt; n &gt;&gt; m &gt;&gt; q;
+    if (n &gt; m) &#123;
+        while (q--)
+        cout &lt;&lt; 0;
+        return;
+    &#125;
+
+    // p：长度为 n 的排列
+    // a：长度为 m 的数组
+    vector&lt;int&gt; p(n + 1);
+    vector&lt;int&gt; a(m + 1);
+
+    // nextPosition[i]：
+    // 从 a[i] 出发，按照 p 的循环顺序，
+    // 下一个可以接上的位置
+    vector&lt;int&gt; nextPosition(m + 1);
+
+    // lastPosition[rank]：
+    // 当前从右往左扫描 a 时，
+    // p 中第 rank 个位置对应的数字最近出现在哪里
+    vector&lt;int&gt; lastPosition(n + 1);
+
+    for (int i = 1; i &lt;= n; i++) &#123;
+        cin &gt;&gt; p[i];
+        //p中数字p[i]的0-based位置
+        pos[p[i]] = i - 1;
+    &#125;
+    for (int i = 1; i &lt;= m; i++)cin &gt;&gt; a[i];
+    lastPosition[pos[a[m]]] = m;
+
+    for (int i = m - 1; i &gt;= 1; i--) &#123;
+        int rank = pos[a[i]];
+        int nextRank = (rank + 1) % n;
+        if (lastPosition[nextRank]) &#123;
+            nextPosition[i] = lastPosition[nextRank];
+            //从右往左建立 nextPosition。
+            //即寻找这个元素在 a[i] 后面最近出现的位置。
+        &#125;
+        lastPosition[rank] = i;
+    &#125;
+    for (int i = 1; i &lt;= m; i++) &#123;
+        reverseGraph[nextPosition[i]].push_back(i);
+        //从后往前 DFS，建立反向图
+    &#125;
+
+    //对每一条链进行 DFS。
+    for (int i = m; i &gt;= 1; i--) &#123;
+        if (visited[i])continue;
+        visited[i] = 1;
+        path[0] = i;
+        dfs(i, 0, 0);
+        //DFS 可以一次处理整条链，不需要像题解那样对每个节点单独 binary lifting。
+    &#125;
+    int minEnd = 0;
+    //earliestEnd[i] 原本表示：从 i 开始的合法子序列最早在哪里结束。
+    //所以需要做后缀最小值
+    for (int i = m; i &gt;= 1; i--) &#123;
+        if (minEnd == 0) &#123;
+            minEnd = earliestEnd[i];
+            continue;
+        &#125;
+        if (earliestEnd[i])
+            minEnd = min(minEnd, earliestEnd[i]);
+        earliestEnd[i] = minEnd;
+    &#125;
+    if (n == 1) &#123;
+        for (int i = 1; i &lt;= m; i++)
+            earliestEnd[i] = i;
+    &#125;
+    while (q--) &#123;
+        int left, right;
+        cin &gt;&gt; left &gt;&gt; right;
+        if (earliestEnd[left] == 0) &#123;
+            cout &lt;&lt; 0;
+            continue;
+        &#125;
+        if (right &gt;= earliestEnd[left])
+            cout &lt;&lt; 1;
+        else
+            cout &lt;&lt; 0;
+    &#125;
+&#125;
+signed main() &#123;
+    ios::sync_with_stdio(false);
+    cin.tie(0);
+    cout.tie(0);
+    int t = 1;
+    // cin &gt;&gt; t;
+    while (t--) &#123;
+        solve();
+    &#125;
+    return 0;
+&#125;
+```cpp
+时间复杂度O(n+m+p)
+题解时间复杂度O((n+m)logn +p)
+题解:https://codeforces.com/blog/entry/66301 1142B
+</code></pre>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://didit204.github.io/2026/08/21/Lynyrd-Skynyrd%E9%A2%98%E8%A7%A3/" data-id="cmt2b0hyq0000xwvg494n6qto" data-title="Lynyrd Skynyrd题解" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2026/08/15/%E5%9F%8E%E5%A0%A1-The-Castle-%E9%A2%98%E8%A7%A3/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">城堡 The Castle 题解</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/08/">August 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/10/">October 2025</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2026/08/21/Lynyrd-Skynyrd%E9%A2%98%E8%A7%A3/">Lynyrd Skynyrd题解</a>
+          </li>
+        
+          <li>
+            <a href="/2026/08/15/%E5%9F%8E%E5%A0%A1-The-Castle-%E9%A2%98%E8%A7%A3/">城堡 The Castle 题解</a>
+          </li>
+        
+          <li>
+            <a href="/2025/10/03/didit/">didit</a>
+          </li>
+        
+          <li>
+            <a href="/2025/10/03/hello-world/">Hello World</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2026 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
