@@ -6,15 +6,15 @@
   
   <title>Lynyrd Skynyrd题解 | didit204</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="题目地址: https:&#x2F;&#x2F;codeforces.com&#x2F;contest&#x2F;1143&#x2F;E 题解用的是倍增写了一个转换成图的写法时间复杂度比题解快 #include &lt;bits&#x2F;stdc++.h&gt; #define all(x) x.begin(), x.end() #define int long long using namespace std;  const int mod &#x3D; 998">
+  <meta name="description" content="题目地址: https:&#x2F;&#x2F;codeforces.com&#x2F;contest&#x2F;1143&#x2F;E 题解用的是倍增写了一个转换成图的写法时间复杂度比题解快 12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Lynyrd Skynyrd题解">
 <meta property="og:url" content="http://didit204.github.io/2026/08/21/Lynyrd-Skynyrd%E9%A2%98%E8%A7%A3/index.html">
 <meta property="og:site_name" content="didit204">
-<meta property="og:description" content="题目地址: https:&#x2F;&#x2F;codeforces.com&#x2F;contest&#x2F;1143&#x2F;E 题解用的是倍增写了一个转换成图的写法时间复杂度比题解快 #include &lt;bits&#x2F;stdc++.h&gt; #define all(x) x.begin(), x.end() #define int long long using namespace std;  const int mod &#x3D; 998">
+<meta property="og:description" content="题目地址: https:&#x2F;&#x2F;codeforces.com&#x2F;contest&#x2F;1143&#x2F;E 题解用的是倍增写了一个转换成图的写法时间复杂度比题解快 12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2026-08-21T01:40:50.000Z">
-<meta property="article:modified_time" content="2026-08-21T02:01:02.222Z">
+<meta property="article:modified_time" content="2026-08-21T02:04:04.163Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
   
@@ -97,158 +97,9 @@
       
         <p>题目地址: <a target="_blank" rel="noopener" href="https://codeforces.com/contest/1143/E">https://codeforces.com/contest/1143/E</a></p>
 <p>题解用的是倍增<br>写了一个转换成图的写法<br>时间复杂度比题解快</p>
-<pre><code class="cpp">#include &lt;bits/stdc++.h&gt;
-#define all(x) x.begin(), x.end()
-#define int long long
-using namespace std;
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> all(x) x.begin(), x.end()</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> int long long</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> mod = <span class="number">998244353</span>;</span><br><span class="line"><span class="meta">#<span class="keyword">define</span> double long double</span></span><br><span class="line"><span class="keyword">using</span> i128 = <span class="type">__int128_t</span>;</span><br><span class="line"><span class="keyword">typedef</span> pair&lt;<span class="type">int</span>, <span class="type">int</span>&gt; pii;</span><br><span class="line"></span><br><span class="line"><span class="comment">// reverseGraph[x]：所有满足 next[i] = x 的位置 i</span></span><br><span class="line">vector&lt;vector&lt;<span class="type">int</span>&gt;&gt; <span class="built_in">reverseGraph</span>(<span class="number">200010</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// earliestEnd[i]：从位置 i 开始，形成长度 n 的合法子序列时的结束位置</span></span><br><span class="line"><span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">earliestEnd</span><span class="params">(<span class="number">200010</span>)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// path[pos]：DFS 当前路径上第 pos 个位置</span></span><br><span class="line"><span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">path</span><span class="params">(<span class="number">200010</span>)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// visited[i]：位置 i 是否已经被 DFS 处理</span></span><br><span class="line"><span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">visited</span><span class="params">(<span class="number">200010</span>)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// pos[x]：数字 x 在排列 p 中的下标（0-based）</span></span><br><span class="line"><span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">pos</span><span class="params">(<span class="number">200010</span>)</span></span>;</span><br><span class="line"><span class="type">int</span> n;</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    x:当前点的位置</span></span><br><span class="line"><span class="comment">    left, right：当前路径中有效滑动窗口的左右端点</span></span><br><span class="line"><span class="comment">    如果当前路径长度 &gt;= n，</span></span><br><span class="line"><span class="comment">    那么就找到了一个长度为 n 的循环移位子序列。</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">dfs</span><span class="params">(<span class="type">int</span> x, <span class="type">int</span> left, <span class="type">int</span> right)</span> </span>&#123;</span><br><span class="line">    <span class="comment">//只保留长度为 n 的滑动窗口</span></span><br><span class="line">    <span class="comment">//path[left ... right]</span></span><br><span class="line">    <span class="keyword">if</span> (right - left + <span class="number">1</span> &gt;= n) &#123;</span><br><span class="line">        left++;</span><br><span class="line">    &#125;</span><br><span class="line">    right++;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> nextNode : reverseGraph[x]) &#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (visited[nextNode])</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        visited[nextNode] = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 当前路径已经有至少 n 个节点</span></span><br><span class="line">        <span class="keyword">if</span> (right - left + <span class="number">1</span> &gt;= n) &#123;</span><br><span class="line">            earliestEnd[nextNode] = path[left];</span><br><span class="line">        &#125;</span><br><span class="line">        path[right] = nextNode;</span><br><span class="line">        <span class="built_in">dfs</span>(nextNode, left, right);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">solve</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> m, q;</span><br><span class="line">    cin &gt;&gt; n &gt;&gt; m &gt;&gt; q;</span><br><span class="line">    <span class="keyword">if</span> (n &gt; m) &#123;</span><br><span class="line">        <span class="keyword">while</span> (q--)</span><br><span class="line">        cout &lt;&lt; <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// p：长度为 n 的排列</span></span><br><span class="line">    <span class="comment">// a：长度为 m 的数组</span></span><br><span class="line">    <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">p</span><span class="params">(n + <span class="number">1</span>)</span></span>;</span><br><span class="line">    <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">a</span><span class="params">(m + <span class="number">1</span>)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// nextPosition[i]：</span></span><br><span class="line">    <span class="comment">// 从 a[i] 出发，按照 p 的循环顺序，</span></span><br><span class="line">    <span class="comment">// 下一个可以接上的位置</span></span><br><span class="line">    <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">nextPosition</span><span class="params">(m + <span class="number">1</span>)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// lastPosition[rank]：</span></span><br><span class="line">    <span class="comment">// 当前从右往左扫描 a 时，</span></span><br><span class="line">    <span class="comment">// p 中第 rank 个位置对应的数字最近出现在哪里</span></span><br><span class="line">    <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">lastPosition</span><span class="params">(n + <span class="number">1</span>)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++) &#123;</span><br><span class="line">        cin &gt;&gt; p[i];</span><br><span class="line">        <span class="comment">//p中数字p[i]的0-based位置</span></span><br><span class="line">        pos[p[i]] = i - <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= m; i++)cin &gt;&gt; a[i];</span><br><span class="line">    lastPosition[pos[a[m]]] = m;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = m - <span class="number">1</span>; i &gt;= <span class="number">1</span>; i--) &#123;</span><br><span class="line">        <span class="type">int</span> rank = pos[a[i]];</span><br><span class="line">        <span class="type">int</span> nextRank = (rank + <span class="number">1</span>) % n;</span><br><span class="line">        <span class="keyword">if</span> (lastPosition[nextRank]) &#123;</span><br><span class="line">            nextPosition[i] = lastPosition[nextRank];</span><br><span class="line">            <span class="comment">//从右往左建立 nextPosition。</span></span><br><span class="line">            <span class="comment">//即寻找这个元素在 a[i] 后面最近出现的位置。</span></span><br><span class="line">        &#125;</span><br><span class="line">        lastPosition[rank] = i;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= m; i++) &#123;</span><br><span class="line">        reverseGraph[nextPosition[i]].<span class="built_in">push_back</span>(i);</span><br><span class="line">        <span class="comment">//从后往前 DFS，建立反向图</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//对每一条链进行 DFS。</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = m; i &gt;= <span class="number">1</span>; i--) &#123;</span><br><span class="line">        <span class="keyword">if</span> (visited[i])<span class="keyword">continue</span>;</span><br><span class="line">        visited[i] = <span class="number">1</span>;</span><br><span class="line">        path[<span class="number">0</span>] = i;</span><br><span class="line">        <span class="built_in">dfs</span>(i, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">        <span class="comment">//DFS 可以一次处理整条链，不需要像题解那样对每个节点单独 binary lifting。</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">int</span> minEnd = <span class="number">0</span>;</span><br><span class="line">    <span class="comment">//earliestEnd[i] 原本表示：从 i 开始的合法子序列最早在哪里结束。</span></span><br><span class="line">    <span class="comment">//所以需要做后缀最小值</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = m; i &gt;= <span class="number">1</span>; i--) &#123;</span><br><span class="line">        <span class="keyword">if</span> (minEnd == <span class="number">0</span>) &#123;</span><br><span class="line">            minEnd = earliestEnd[i];</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (earliestEnd[i])</span><br><span class="line">            minEnd = <span class="built_in">min</span>(minEnd, earliestEnd[i]);</span><br><span class="line">        earliestEnd[i] = minEnd;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (n == <span class="number">1</span>) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= m; i++)</span><br><span class="line">            earliestEnd[i] = i;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">while</span> (q--) &#123;</span><br><span class="line">        <span class="type">int</span> left, right;</span><br><span class="line">        cin &gt;&gt; left &gt;&gt; right;</span><br><span class="line">        <span class="keyword">if</span> (earliestEnd[left] == <span class="number">0</span>) &#123;</span><br><span class="line">            cout &lt;&lt; <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (right &gt;= earliestEnd[left])</span><br><span class="line">            cout &lt;&lt; <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            cout &lt;&lt; <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">signed</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    ios::<span class="built_in">sync_with_stdio</span>(<span class="literal">false</span>);</span><br><span class="line">    cin.<span class="built_in">tie</span>(<span class="number">0</span>);</span><br><span class="line">    cout.<span class="built_in">tie</span>(<span class="number">0</span>);</span><br><span class="line">    <span class="type">int</span> t = <span class="number">1</span>;</span><br><span class="line">    <span class="comment">// cin &gt;&gt; t;</span></span><br><span class="line">    <span class="keyword">while</span> (t--) &#123;</span><br><span class="line">        <span class="built_in">solve</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-const int mod = 998244353;
-#define double long double
-using i128 = __int128_t;
-typedef pair&lt;int, int&gt; pii;
-
-// reverseGraph[x]：所有满足 next[i] = x 的位置 i
-vector&lt;vector&lt;int&gt;&gt; reverseGraph(200010);
-
-// earliestEnd[i]：从位置 i 开始，形成长度 n 的合法子序列时的结束位置
-vector&lt;int&gt; earliestEnd(200010);
-
-// path[pos]：DFS 当前路径上第 pos 个位置
-vector&lt;int&gt; path(200010);
-
-// visited[i]：位置 i 是否已经被 DFS 处理
-vector&lt;int&gt; visited(200010);
-
-// pos[x]：数字 x 在排列 p 中的下标（0-based）
-vector&lt;int&gt; pos(200010);
-int n;
-/*
-    x:当前点的位置
-    left, right：当前路径中有效滑动窗口的左右端点
-    如果当前路径长度 &gt;= n，
-    那么就找到了一个长度为 n 的循环移位子序列。
-*/
-void dfs(int x, int left, int right) &#123;
-    //只保留长度为 n 的滑动窗口
-    //path[left ... right]
-    if (right - left + 1 &gt;= n) &#123;
-        left++;
-    &#125;
-    right++;
-    for (auto nextNode : reverseGraph[x]) &#123;
-
-        if (visited[nextNode])
-            continue;
-        visited[nextNode] = 1;
-
-        // 当前路径已经有至少 n 个节点
-        if (right - left + 1 &gt;= n) &#123;
-            earliestEnd[nextNode] = path[left];
-        &#125;
-        path[right] = nextNode;
-        dfs(nextNode, left, right);
-    &#125;
-&#125;
-void solve() &#123;
-    int m, q;
-    cin &gt;&gt; n &gt;&gt; m &gt;&gt; q;
-    if (n &gt; m) &#123;
-        while (q--)
-        cout &lt;&lt; 0;
-        return;
-    &#125;
-
-    // p：长度为 n 的排列
-    // a：长度为 m 的数组
-    vector&lt;int&gt; p(n + 1);
-    vector&lt;int&gt; a(m + 1);
-
-    // nextPosition[i]：
-    // 从 a[i] 出发，按照 p 的循环顺序，
-    // 下一个可以接上的位置
-    vector&lt;int&gt; nextPosition(m + 1);
-
-    // lastPosition[rank]：
-    // 当前从右往左扫描 a 时，
-    // p 中第 rank 个位置对应的数字最近出现在哪里
-    vector&lt;int&gt; lastPosition(n + 1);
-
-    for (int i = 1; i &lt;= n; i++) &#123;
-        cin &gt;&gt; p[i];
-        //p中数字p[i]的0-based位置
-        pos[p[i]] = i - 1;
-    &#125;
-    for (int i = 1; i &lt;= m; i++)cin &gt;&gt; a[i];
-    lastPosition[pos[a[m]]] = m;
-
-    for (int i = m - 1; i &gt;= 1; i--) &#123;
-        int rank = pos[a[i]];
-        int nextRank = (rank + 1) % n;
-        if (lastPosition[nextRank]) &#123;
-            nextPosition[i] = lastPosition[nextRank];
-            //从右往左建立 nextPosition。
-            //即寻找这个元素在 a[i] 后面最近出现的位置。
-        &#125;
-        lastPosition[rank] = i;
-    &#125;
-    for (int i = 1; i &lt;= m; i++) &#123;
-        reverseGraph[nextPosition[i]].push_back(i);
-        //从后往前 DFS，建立反向图
-    &#125;
-
-    //对每一条链进行 DFS。
-    for (int i = m; i &gt;= 1; i--) &#123;
-        if (visited[i])continue;
-        visited[i] = 1;
-        path[0] = i;
-        dfs(i, 0, 0);
-        //DFS 可以一次处理整条链，不需要像题解那样对每个节点单独 binary lifting。
-    &#125;
-    int minEnd = 0;
-    //earliestEnd[i] 原本表示：从 i 开始的合法子序列最早在哪里结束。
-    //所以需要做后缀最小值
-    for (int i = m; i &gt;= 1; i--) &#123;
-        if (minEnd == 0) &#123;
-            minEnd = earliestEnd[i];
-            continue;
-        &#125;
-        if (earliestEnd[i])
-            minEnd = min(minEnd, earliestEnd[i]);
-        earliestEnd[i] = minEnd;
-    &#125;
-    if (n == 1) &#123;
-        for (int i = 1; i &lt;= m; i++)
-            earliestEnd[i] = i;
-    &#125;
-    while (q--) &#123;
-        int left, right;
-        cin &gt;&gt; left &gt;&gt; right;
-        if (earliestEnd[left] == 0) &#123;
-            cout &lt;&lt; 0;
-            continue;
-        &#125;
-        if (right &gt;= earliestEnd[left])
-            cout &lt;&lt; 1;
-        else
-            cout &lt;&lt; 0;
-    &#125;
-&#125;
-signed main() &#123;
-    ios::sync_with_stdio(false);
-    cin.tie(0);
-    cout.tie(0);
-    int t = 1;
-    // cin &gt;&gt; t;
-    while (t--) &#123;
-        solve();
-    &#125;
-    return 0;
-&#125;
-```cpp
-时间复杂度O(n+m+p)
-题解时间复杂度O((n+m)logn +p)
-题解:https://codeforces.com/blog/entry/66301 1142B
-</code></pre>
+<p>时间复杂度O(n+m+p)<br>题解时间复杂度O((n+m)logn +p)<br>题解:<a target="_blank" rel="noopener" href="https://codeforces.com/blog/entry/66301">https://codeforces.com/blog/entry/66301</a> 1142B</p>
 
       
     </div>
