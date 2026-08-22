@@ -71,6 +71,46 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-Maximum-Composition-Editorial" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2026/08/22/Maximum-Composition-Editorial/" class="article-date">
+  <time class="dt-published" datetime="2026-08-22T02:15:32.000Z" itemprop="datePublished">2026-08-22</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2026/08/22/Maximum-Composition-Editorial/">Maximum Composition Editorial</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>洛谷: <a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/AT_abc370_e">https://www.luogu.com.cn/problem/AT_abc370_e</a><br>atcoder: <a target="_blank" rel="noopener" href="https://atcoder.jp/contests/abc366/tasks/abc366_f">https://atcoder.jp/contests/abc366/tasks/abc366_f</a><br>第一次遇到排序+dp的题</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="meta">#<span class="keyword">define</span> int long long</span></span><br><span class="line"><span class="keyword">typedef</span> pair&lt;<span class="type">int</span>,<span class="type">int</span>&gt; pii;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">cc</span>&#123;</span><br><span class="line">	<span class="type">int</span> a,b;</span><br><span class="line">	<span class="type">int</span> i;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">cmp</span><span class="params">(cc x,cc y)</span></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> (x.a<span class="number">-1</span>)*y.b&lt;(y.a<span class="number">-1</span>)*x.b;<span class="comment">//a1(a2()+b2)+b1&lt;a2(a1()+b1)+b2-&gt;(a1-1)*b2&lt;(a2-1)*b1 内&lt;外</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">solve</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="type">int</span> n,k;</span><br><span class="line">	cin&gt;&gt;n&gt;&gt;k;</span><br><span class="line">	<span class="type">int</span> i;</span><br><span class="line">	vector&lt;cc&gt;<span class="built_in">v</span>(n<span class="number">+1</span>);</span><br><span class="line">	<span class="comment">//vector&lt;int&gt;a(n+1),b(n+1);</span></span><br><span class="line">	<span class="keyword">for</span>(i=<span class="number">1</span>;i&lt;=n;i++)&#123;</span><br><span class="line">		<span class="type">int</span> a,b;</span><br><span class="line">		cin&gt;&gt;a&gt;&gt;b;</span><br><span class="line">		v[i]=&#123;a,b,i&#125;;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">sort</span>(v.<span class="built_in">begin</span>()<span class="number">+1</span>,v.<span class="built_in">end</span>(),cmp);<span class="comment">//排序取最优</span></span><br><span class="line">	vector&lt;<span class="type">int</span>&gt;<span class="built_in">d</span>(k<span class="number">+1</span>,<span class="number">-1e9</span>);</span><br><span class="line">	d[<span class="number">0</span>]=<span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">auto</span> i:v)&#123;<span class="comment">//01背包 选最大的k个数的函数值</span></span><br><span class="line">		<span class="keyword">for</span>(<span class="type">int</span> j=k;j&gt;=<span class="number">1</span>;j--)&#123;</span><br><span class="line">			<span class="comment">//cout&lt;&lt;v[i].a&lt;&lt;&quot; &quot;&lt;&lt;v[i].b&lt;&lt;&#x27;\n&#x27;;</span></span><br><span class="line">			<span class="keyword">if</span>(d[j<span class="number">-1</span>]==<span class="number">-1e9</span>)<span class="keyword">continue</span>;</span><br><span class="line">			d[j]=<span class="built_in">max</span>(d[j],d[j<span class="number">-1</span>]*i.a+i.b);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	cout&lt;&lt;d[k]&lt;&lt;<span class="string">&#x27; &#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">signed</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">	ios::<span class="built_in">sync_with_stdio</span>(<span class="literal">false</span>);</span><br><span class="line">	cin.<span class="built_in">tie</span>(<span class="number">0</span>),cout.<span class="built_in">tie</span>(<span class="number">0</span>);</span><br><span class="line">	<span class="type">int</span> t=<span class="number">1</span>;</span><br><span class="line">	<span class="comment">//cin&gt;&gt;t;</span></span><br><span class="line">	<span class="keyword">while</span>(t--)&#123;</span><br><span class="line">		<span class="built_in">solve</span>();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//fi(x)=Ai*x+Bi</span></span><br><span class="line"><span class="comment">//对于由 K 个互不相同、范围在 1 到 N（含端点）之间的整数构成的序列 p=(p1,p2,…,pK)，求 fp1(fp2(…fpK(1)…)) 的最大可能值。</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">N 个值</span></span><br><span class="line"><span class="comment">↓</span></span><br><span class="line"><span class="comment">我要选 K 个</span></span><br><span class="line"><span class="comment">↓</span></span><br><span class="line"><span class="comment">需要知道由内到外顺序</span></span><br><span class="line"><span class="comment">↓</span></span><br><span class="line"><span class="comment">选择：C(N,K)</span></span><br><span class="line"><span class="comment">排列：K!</span></span><br><span class="line"><span class="comment">↓</span></span><br><span class="line"><span class="comment">先排序再背包更好</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://didit204.github.io/2026/08/22/Maximum-Composition-Editorial/" data-id="cmt3r21l00000k8vg3oh1gz54" data-title="Maximum Composition Editorial" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-Lynyrd-Skynyrd题解" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2026/08/21/Lynyrd-Skynyrd%E9%A2%98%E8%A7%A3/" class="article-date">
@@ -268,6 +308,10 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2026/08/22/Maximum-Composition-Editorial/">Maximum Composition Editorial</a>
+          </li>
         
           <li>
             <a href="/2026/08/21/Lynyrd-Skynyrd%E9%A2%98%E8%A7%A3/">Lynyrd Skynyrd题解</a>
